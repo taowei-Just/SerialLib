@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'Certification'
-            keyPassword 'certification_hyt_alias_11'
-            storeFile file('E:/Git/mvp/SerialApplication/CertificationKey.jks')
-            storePassword 'Certification_hyt_11-16'
-        }
+//        config {
+//            keyAlias 'Certification'
+//            keyPassword 'certification_hyt_alias_11'
+//            storeFile file('E:/Git/mvp/SerialApplication/CertificationKey.jks')
+//            storePassword 'Certification_hyt_11-16'
+//        }
     }
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
@@ -18,18 +18,8 @@ android {
         versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-        debug {
-            signingConfig signingConfigs.config
-        }
-   
- 
-
         libraryVariants.all { variant ->
             if (variant.buildType.name == 'release') {
                 variant.assemble.doLast {
