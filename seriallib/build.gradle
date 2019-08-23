@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'Certification'
+            keyPassword 'certification_hyt_alias_11'
+            storeFile file('E:/Git/mvp/SerialApplication/CertificationKey.jks')
+            storePassword 'Certification_hyt_11-16'
+        }
+    }
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.4"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
+        }
+   
+ 
+
+        libraryVariants.all { variant ->
+            if (variant.buildType.name == 'release') {
+                variant.assemble.doLast {
+                    variant.outputs.each { output ->
+                        def outputFile = output.outputFile
+                        if (outputFile != null && outputFile.name.endsWith('release.aar')) {
+                            def fileName = "${project.name}${variant.flavorName}_${android.defaultConfig.versionName}"
+                            def outputPath = "../output/aar"
+                            copy {
+                                from outputFile
+                                into outputPath
+                                rename { fileName + ".aar" }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            jni.srcDirs = []
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    api 'com.github.taowei-Just:UtilsLib:1.4'
+}
