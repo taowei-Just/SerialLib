@@ -149,10 +149,11 @@ public abstract class BaseSerial<T extends SerialData> implements ISerial {
             totalLen += lenth;
         }
         if (totalLen < len && (lenth = inputStream.available()) > 0) {
-            buff = new byte[(len - totalLen)];
+            buff = new byte[ lenth>(len - totalLen) ?  (len - totalLen):lenth];
+
             inputStream.read(buff, 0, buff.length);
             System.arraycopy(buff, 0, data, totalLen, buff.length);
-            totalLen += lenth;
+            totalLen += buff.length;
         }
         if (totalLen == 0)
             return null;
